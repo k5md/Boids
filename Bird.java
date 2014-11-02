@@ -1,4 +1,4 @@
-public class Bird
+class Bird
 {
     Vector position;
     Vector velocity;

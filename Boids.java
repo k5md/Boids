@@ -1,50 +1,39 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JFrame;
 import java.util.Random;
-import javax.swing.Timer;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
-import javax.swing.JPanel;
-import javax.swing.JButton;
 
-class Boids extends JPanel implements MouseListener 
+class Boids 
 {
-    Timer timer = null;
-    JFrame myJFrame;
-    int xRes = 1024;
-    int yRes = 768;
-    int N = 50;
-    Bird[] birds = new Bird[N];
-    boolean flag = false;                                             
+    int N;
+    Bird[] birds; 
+    int xRes;
+    int yRes;
      
-    public void init() 
+    public Boids(int N, int xRes, int yRes)
     {
-        setBackground(Color.white);
-        setForeground(Color.white);
-        System.out.println("Initialisation...");
+        this.N = N;
+        this.xRes = xRes;
+        this.yRes = yRes;
+        birds = new Bird[N];
+        System.out.println("Initializing positions of " + N + " boids");
         Random rand = new Random();
+        
         for (int i = 0; i < birds.length - 1; i++)   
-            birds[i] = new Bird(new Vector(rand.nextInt(xRes-500),rand.nextInt(yRes-300),0),new Vector(0,0,0)); 
-        flag = true;
+        {
+            birds[i] = new Bird(new Vector(rand.nextInt(xRes),rand.nextInt(yRes),0),new Vector(0,0,0)); 
+            System.out.println(birds[i]);
+        }
         System.out.println("Done.");
-    }   
-    public void paint(Graphics g) 
-    {  
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                             RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setStroke(new BasicStroke(5));
-        g2d.setPaint(Color.black);
-        if (flag)
-            for (int i = 0; i < birds.length - 1; i++)   
-            g2d.drawLine(birds[i].position.x, birds[i].position.y, birds[i].position.x, birds[i].position.y);
-    }   
+    }
+    public void draw(Graphics g)
+    {
+        for (int i = 0; i < birds.length - 1; i++)   
+            g.drawLine(birds[i].position.x, birds[i].position.y, birds[i].position.x, birds[i].position.y);
+    }
     public void move() 
     {
         for (int i = 0; i < birds.length - 1; i++)  
         {
-            birds[i].velocity = (((birds[i].velocity.add(cohesion(birds[i]))).add(alignment(birds[i]))).add(separation(birds[i]))).add(boundPosition(birds[i]));
+            birds[i].velocity = birds[i].velocity.add(cohesion(birds[i])).add(alignment(birds[i])).add(separation(birds[i])).add(boundPosition(birds[i]));
             int vlim = 100;
             if (birds[i].velocity.length() > vlim)
                 birds[i].velocity = (birds[i].velocity.div((int)birds[i].velocity.length())).mult(vlim);
@@ -57,7 +46,6 @@ class Boids extends JPanel implements MouseListener
         if (b.velocity.length() > vlim)
             b.velocity = (b.velocity.div((int)b.velocity.length())).mult(vlim);
     }
-
    /*************************************************************************
     *  Rules that determinine flock behaviour.
     *************************************************************************/  
@@ -104,46 +92,4 @@ class Boids extends JPanel implements MouseListener
             v.y = -10;
         return v;
     }
-    /*************************************************************************/  
-    
-    public Boids()
-    {
-        System.out.println("created new instance of Boids");
-        myJFrame = new JFrame("Boids Classic");
-        myJFrame.setSize(xRes, yRes);
-        JButton button = new JButton("Run");
-        myJFrame.add(button, BorderLayout.SOUTH);
-        myJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myJFrame.getContentPane().add(this);
-        myJFrame.setVisible(true);
-        init();  
-        button.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e) {
-                timer.start();
-            }
-        });
-        this.addMouseListener(this);
-        this.timer = new Timer(30, new ActionListener(){     
-            public void actionPerformed(ActionEvent e) 
-            {
-                move();                        
-                myJFrame.revalidate();  
-                myJFrame.repaint();
-            }
-        });
-    }
-    public void mouseClicked(MouseEvent me) {
-    }
-    public void mouseEntered(MouseEvent e) {
-    }
-    public void mouseReleased(MouseEvent e) {
-    }
-    public void mousePressed(MouseEvent e) {
-    }
-    public void mouseExited(MouseEvent e) {
-    }
-    public static void main(String args[]) 
-    {
-        Boids boids = new Boids();
-    } 
 }
