@@ -16,10 +16,9 @@ class Boids
         birds = new Bird[N];
         System.out.println("Initializing positions of " + N + " boids");
         Random rand = new Random();
-        
         for (int i = 0; i < birds.length - 1; i++)   
         {
-            birds[i] = new Bird(new Vector(rand.nextInt(xRes),rand.nextInt(yRes),0),new Vector(0,0,0)); 
+            birds[i] = new Bird(new Vector(rand.nextInt(xRes),rand.nextInt(yRes)),new Vector(0,0)); 
             System.out.println(birds[i]);
         }
         System.out.println("Done.");
@@ -27,7 +26,7 @@ class Boids
     public void draw(Graphics g)
     {
         for (int i = 0; i < birds.length - 1; i++)   
-            g.drawLine(birds[i].position.x, birds[i].position.y, birds[i].position.x, birds[i].position.y);
+            g.drawLine(birds[i].position.data[0], birds[i].position.data[1], birds[i].position.data[0], birds[i].position.data[1]);
     }
     public void move() 
     {
@@ -51,7 +50,7 @@ class Boids
     *************************************************************************/  
     public Vector cohesion(Bird bj) 
     {
-        Vector pcJ = new Vector(0,0,0);
+        Vector pcJ = new Vector(0,0);
         for (int i = 0; i < birds.length - 1; i++)   
             if (!birds[i].equals(bj)) 
             pcJ = pcJ.add(birds[i].position);
@@ -60,7 +59,7 @@ class Boids
     }  
     public Vector alignment(Bird bj) 
     {
-        Vector pvJ = new Vector(0,0,0);   
+        Vector pvJ = new Vector(0,0);   
         for (int i = 0; i < birds.length - 1; i++)  
             if (!birds[i].equals(bj)) 
             pvJ = pvJ.add(birds[i].velocity);
@@ -69,7 +68,7 @@ class Boids
     }  
     public Vector separation(Bird bj) 
     {
-        Vector c = new Vector(0,0,0);
+        Vector c = new Vector(0,0);
         for (int i = 0; i < birds.length - 1; i++)  
             if (!birds[i].equals(bj) && ((birds[i].position.sub(bj.position)).length() < 10))
             c = c.sub(birds[i].position).add(bj.position);
@@ -81,15 +80,15 @@ class Boids
         int Xmax = xRes;
         int Ymin = 0; 
         int Ymax = yRes; 
-        Vector v = new Vector(0,0,0);
-        if (b.position.x < Xmin)
-            v.x = 10;
-        else if (b.position.x > Xmax) 
-            v.x = -10;
-        if (b.position.y < Ymin) 
-            v.y = 10;
-        else if (b.position.y > Ymax) 
-            v.y = -10;
+        Vector v = new Vector(0,0);
+        if (b.position.data[0] < Xmin)
+            v.data[0] = 10;
+        else if (b.position.data[0] > Xmax) 
+            v.data[0] = -10;
+        if (b.position.data[1] < Ymin) 
+            v.data[1] = 10;
+        else if (b.position.data[1] > Ymax) 
+            v.data[1] = -10;
         return v;
     }
 }

@@ -1,58 +1,67 @@
 public class Vector
 {
-    public int x = 0;
-    public int y = 0;
-    public int z = 0;
-    
-    public Vector(int x, int y, int z)
+    public int[] data;
+    public int N;
+    public Vector(int... args) 
     {
-        this.x = x;
-        this.y = y;
-        this.z = z;   
+        N = args.length;
+        data = new int[N];
+        for (int i = 0; i < N; i++)
+            data[i] = args[i];
     }
     public Vector div(int that)
     {
-        return new Vector(this.x / that, 
-                          this.y / that, 
-                          this.z / that);
+        int[] temp = new int[N];
+        for (int i=0; i < N; i++)
+            temp[i] = data[i] / that;
+        return new Vector(temp);
     }   
     public Vector add(Vector that) 
     {
-        return new Vector(this.x + that.x, 
-                          this.y + that.y, 
-                          this.z + that.z);
+        int[] temp = new int[N];
+        for (int i = 0; i < N; i++)
+            temp[i] = data[i] + that.data[i];
+        return new Vector(temp);
     }
     public Vector sub(Vector that) 
     {
-        return new Vector(this.x - that.x, 
-                          this.y - that.y, 
-                          this.z - that.z);
+        int[] temp = new int[N];
+        for (int i = 0; i < N; i++)
+            temp[i] = data[i] - that.data[i];
+        return new Vector(temp);
     }
     public Vector abs(Vector that) 
     {
-        return new Vector(Math.abs(this.x - that.x), 
-                          Math.abs(this.y - that.y), 
-                          Math.abs(this.z - that.z));
+        int[] temp = new int[N];
+        for (int i = 0; i < N ; i++)
+            temp[i] = Math.abs(data[i] - that.data[i]);
+        return new Vector(temp);
     }
-        public Vector mult(int that) 
+    public Vector mult(int that) 
     {
-        return new Vector(this.x * that, 
-                          this.y * that, 
-                          this.z * that);
+        int[] temp = new int[N];
+        for (int i = 0; i < N; i++)
+            temp[i] = data[i] * that;
+        return new Vector(temp);
     }
     public boolean equ(Vector that) 
     {
-        if (this.x - that.x != 0) return false; 
-        if (this.y - that.y != 0) return false; 
-        if (this.z - that.z != 0) return false; 
+        for (int i=0; i < N; i++)
+            if (data[i] - that.data[i] != 0) return false;
         return true;
     }
     public double length()
     {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
+        double temp = 0.0;
+        for (int i=0; i < N; i++)
+            temp += Math.pow(data[i], 2);
+        return Math.sqrt(temp);
     }
     public String toString()
     {
-        return new String("(" + this.x + "," + this.y + "," + this.z + ")");
+        String temp = "( ";
+        for (int i= 0; i < N; i++)
+            temp += new String(data[i] + " ");
+        return temp + ")";
     }
 }

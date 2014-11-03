@@ -16,7 +16,7 @@ class BoidsVisualisation extends JPanel implements MouseListener
     GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
     int width = gd.getDisplayMode().getWidth();
     int height = gd.getDisplayMode().getHeight();
-
+    
     public BoidsVisualisation()
     {
         boids = new Boids(50, width, height);
