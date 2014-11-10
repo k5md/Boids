@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.MouseListener;
 import javax.swing.*;
+import javax.swing.event.*;
 
 class BoidsVisualisation extends JFrame implements MouseListener
 {
@@ -36,10 +37,12 @@ class BoidsVisualisation extends JFrame implements MouseListener
         Container content = myJFrame.getContentPane();
         
         field= new Field();
-        controlPanel = new ControlPanel();
         field.setPreferredSize(new Dimension(fieldWidth, height));
-        controlPanel.setPreferredSize(new Dimension(controlWidth, height));
         field.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        controlPanel = new ControlPanel();
+        controlPanel.setPreferredSize(new Dimension(controlWidth, height));
+        controlPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         
         content.add(controlPanel, BorderLayout.EAST);
         content.add(field, BorderLayout.WEST);
@@ -99,8 +102,6 @@ class BoidsVisualisation extends JFrame implements MouseListener
     {
         public ControlPanel()
         { 
-            setBackground(Color.red);
-
             JButton button = new JButton("Run");
             button.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
@@ -108,9 +109,24 @@ class BoidsVisualisation extends JFrame implements MouseListener
                 }
             });
             
-            add(button, BorderLayout.WEST);
+            
+            JSlider slider= new JSlider(JSlider.HORIZONTAL,0,100,50); //min value 0, max value 100, initial value 50
+            slider.addChangeListener(new ChangeListener(){
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    int value = (int)source.getValue();
+                    System.out.println(value + "");
+                }
+            });
+            
+            
+            add(button);
+            add(slider);
             
             setVisible(true); 
+            
+
         }
+
     }
 }
