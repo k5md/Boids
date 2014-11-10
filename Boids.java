@@ -36,7 +36,7 @@ class Boids
         }
         System.out.println("Done in: " + (getTimeMillis() - temp) +"ms.");
     }    
-    public void move() 
+    public void move(double cohesionCoefficient, int alignmentCoefficient, double separationCoefficient) 
     {
         /*
         int[] ridx = new int[birds.length];
@@ -52,7 +52,7 @@ class Boids
                 double[] coords = birds[i].position.data;
                 List<Bird> nbrs = kd.nearest(coords, 50);
                 kd.delete(coords);
-                birds[i].velocity(nbrs, xRes, yRes);
+                birds[i].velocity(nbrs, xRes, yRes, cohesionCoefficient, alignmentCoefficient, separationCoefficient);
                 birds[i].position();
                 kd.insert(birds[i].position.data, birds[i]);
             }

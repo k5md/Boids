@@ -11,9 +11,9 @@ class Bird
         this.position = position;
         this.velocity = velocity;
     }  
-    public void velocity(List<Bird> birds, int xMax, int yMax)
+    public void velocity(List<Bird> birds, int xMax, int yMax, double cohesionCoefficient, int alignmentCoefficient, double separationCoefficient)
     {
-        velocity = velocity.plus(cohesion(birds, 100.0)).plus(alignment(birds, 8)).plus(separation(birds, 10.0)).plus(boundPosition(xMax, yMax));
+        velocity = velocity.plus(cohesion(birds, cohesionCoefficient)).plus(alignment(birds, alignmentCoefficient)).plus(separation(birds, separationCoefficient)).plus(boundPosition(xMax, yMax));
         limit_velocity();
     }
     public void position()

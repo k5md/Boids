@@ -65,6 +65,10 @@ class BoidsVisualisation extends JFrame implements MouseListener
     public void mouseExited(MouseEvent e) {
     }
     
+    double cohesionCoefficient = 100.0;
+    int alignmentCoefficient = 8;
+    double separationCoefficient = 10.0;
+        
     class Field extends JPanel
     {
         Boids boids;
@@ -77,7 +81,7 @@ class BoidsVisualisation extends JFrame implements MouseListener
             timer = new Timer(30, new ActionListener(){
                 public void actionPerformed(ActionEvent e)
                 {
-                    boids.move();
+                    boids.move(cohesionCoefficient, alignmentCoefficient, separationCoefficient);
                     myJFrame.repaint();
                 }
             });
@@ -109,19 +113,35 @@ class BoidsVisualisation extends JFrame implements MouseListener
                 }
             });
             
-            
-            JSlider slider= new JSlider(JSlider.HORIZONTAL,0,100,50); //min value 0, max value 100, initial value 50
-            slider.addChangeListener(new ChangeListener(){
+            JSlider cohesionSlider= new JSlider(JSlider.HORIZONTAL,1,100,100); 
+            cohesionSlider.addChangeListener(new ChangeListener(){
                 public void stateChanged(ChangeEvent e) {
                     JSlider source = (JSlider)e.getSource();
-                    int value = (int)source.getValue();
-                    System.out.println(value + "");
+                    cohesionCoefficient = (int)source.getValue()*1.0;
+                }
+            });
+            
+            JSlider alignmentSlider= new JSlider(JSlider.HORIZONTAL,1,100,8); 
+            alignmentSlider.addChangeListener(new ChangeListener(){
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    alignmentCoefficient = (int)source.getValue();
+                }
+            });
+            
+            JSlider separationSlider= new JSlider(JSlider.HORIZONTAL,1,100,10); 
+            separationSlider.addChangeListener(new ChangeListener(){
+                public void stateChanged(ChangeEvent e) {
+                    JSlider source = (JSlider)e.getSource();
+                    separationCoefficient = (int)source.getValue()*1.0;
                 }
             });
             
             
-            add(button);
-            add(slider);
+            add(button, BorderLayout.SOUTH);
+            add(cohesionSlider, BorderLayout.NORTH);
+            add(alignmentSlider, BorderLayout.NORTH);
+            add(separationSlider, BorderLayout.NORTH);
             
             setVisible(true); 
             
