@@ -80,17 +80,8 @@ class Boids
             g.drawLine((int)birds[i].position.data[0],(int)birds[i].position.data[1], (int)birds[i].position.data[0], (int)birds[i].position.data[1]);   
     }
     
-    private long getTimeMillis() {
+    public long getTimeMillis() {
         Date d = new Date();
         return d.getTime();
-    }
-    public final void shuffle(int[] a) {
-        int N = a.length;
-        for (int i = 0; i < N; i++) {
-            int r = i + (int) (Math.random() * (N - i));
-            int swap = a[r];
-            a[r] = a[i];
-            a[i] = swap;
-        }
     }
 }

@@ -67,7 +67,6 @@ class Bird
             this.velocity = this.velocity.times(vlim);
         }
     }
-    
     public String toString()
     {
         return new String("Position: " + this.position + " Velocity: " + this.velocity);

@@ -1,62 +1,56 @@
-import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.Timer;
-import java.awt.Graphics;
 import java.awt.event.MouseListener;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import java.util.Date;
+import javax.swing.*;
 
-
-class BoidsVisualisation extends JPanel implements MouseListener 
+class BoidsVisualisation extends JFrame implements MouseListener
 {
-    Boids boids;
-    Timer timer = null;  
-    JFrame myJFrame = new JFrame("Boids Classic");
-    JButton button = new JButton("Run");
-    GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    int width = gd.getDisplayMode().getWidth();
-    int height = gd.getDisplayMode().getHeight();
+    JFrame myJFrame;
+    Field field;
+    ControlPanel controlPanel;
+    Timer timer = null;
     
-    public BoidsVisualisation()
+    int controlWidth, fieldWidth, height;
+    
+    public static void main(String args[])
     {
-        boids = new Boids(500, width, height);
-        myJFrame.setSize(width, height);
-        myJFrame.add(button, BorderLayout.SOUTH);
-        myJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        myJFrame.getContentPane().add(this);
-        myJFrame.setVisible(true);
-        setBackground(Color.white);
-        setForeground(Color.white);  
-        button.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e) {
-                timer.start();
-            }
-        });
-        this.addMouseListener(this);
-        timer = new Timer(30, new ActionListener(){     
-            public void actionPerformed(ActionEvent e) 
-            {
-                boids.move(); 
-                myJFrame.revalidate();  
-                myJFrame.repaint();
-            }
-        });
+        BoidsVisualisation bv = new BoidsVisualisation();
     }
     
+    public BoidsVisualisation()
+    { 
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        height= gd.getDisplayMode().getHeight();
+        
+        fieldWidth = (int) Math.round(width * 0.75);
+        controlWidth = width - fieldWidth;
+        
+        System.out.println(fieldWidth +" " +  height);
+               
+        myJFrame = new JFrame("Boids Classic");
+        
+        myJFrame.setSize(width, height);
+        myJFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        Container content = myJFrame.getContentPane();
+        
+        field= new Field();
+        controlPanel = new ControlPanel();
+        field.setPreferredSize(new Dimension(fieldWidth, height));
+        controlPanel.setPreferredSize(new Dimension(controlWidth, height));
+        field.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        content.add(controlPanel, BorderLayout.EAST);
+        content.add(field, BorderLayout.WEST);
+        
+        pack();
+        
+        myJFrame.setVisible(true);
+        
+        addMouseListener(this);
+    }
     
-    public void paint(Graphics g) 
-    {  
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(5));
-        g2d.setPaint(Color.black);
-        
-        
-        //for (int i = 0; i < birds.length - 1; i++)   
-            //g.drawLine((int)birds[i].position.data[0],(int)birds[i].position.data[1], (int)birds[i].position.data[0], (int)birds[i].position.data[1]);   
-        boids.draw(g2d);
-    }     
     public void mouseClicked(MouseEvent me) {
     }
     public void mouseEntered(MouseEvent e) {
@@ -68,13 +62,55 @@ class BoidsVisualisation extends JPanel implements MouseListener
     public void mouseExited(MouseEvent e) {
     }
     
-    private long getTimeMillis() 
+    class Field extends JPanel
     {
-        Date d = new Date();
-        return d.getTime();
+        Boids boids;
+        
+        public Field()
+        {
+            boids = new Boids(500, fieldWidth, height);
+            
+            
+            timer = new Timer(30, new ActionListener(){
+                public void actionPerformed(ActionEvent e)
+                {
+                    boids.move();
+                    myJFrame.repaint();
+                }
+            });
+            
+            setVisible(true); 
+        }
+        
+        @Override
+        public void paintComponent(Graphics g)
+        {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setStroke(new BasicStroke(5));
+            g2d.setPaint(Color.black);
+            //for (int i = 0; i < boids.birds.length - 1; i++)   
+            //g.drawLine((int)boids.birds[i].position.data[0],(int)boids.birds[i].position.data[1], (int)boids.birds[i].position.data[0], (int)boids.birds[i].position.data[1]); 
+            boids.draw(g2d);
+        } 
     }
-    public static void main(String args[]) 
+    
+    
+    class ControlPanel extends JPanel
     {
-        BoidsVisualisation bv = new BoidsVisualisation();
-    } 
+        public ControlPanel()
+        { 
+            setBackground(Color.red);
+
+            JButton button = new JButton("Run");
+            button.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e) {
+                    timer.start();
+                }
+            });
+            
+            add(button, BorderLayout.WEST);
+            
+            setVisible(true); 
+        }
+    }
 }
