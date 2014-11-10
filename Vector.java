@@ -1,67 +1,71 @@
-public class Vector
-{
-    public int[] data;
-    public int N;
-    public Vector(int... args) 
-    {
-        N = args.length;
-        data = new int[N];
+public class Vector { 
+
+    private int N;              
+    double[] data;       
+
+    public Vector(int d) {
+        N = d;
+        data = new double[N];
+    }
+
+    public Vector(double... a) {
+        N = a.length;
+        data = new double[N];
         for (int i = 0; i < N; i++)
-            data[i] = args[i];
+            data[i] = a[i];
     }
-    public Vector div(int that)
-    {
-        int[] temp = new int[N];
-        for (int i=0; i < N; i++)
-            temp[i] = data[i] / that;
-        return new Vector(temp);
-    }   
-    public Vector add(Vector that) 
-    {
-        int[] temp = new int[N];
+
+    public double dot(Vector that) {
+        if (this.N != that.N) throw new IllegalArgumentException("Dimensions don't agree");
+        double sum = 0.0;
         for (int i = 0; i < N; i++)
-            temp[i] = data[i] + that.data[i];
-        return new Vector(temp);
+            sum = sum + (this.data[i] * that.data[i]);
+        return sum;
     }
-    public Vector sub(Vector that) 
-    {
-        int[] temp = new int[N];
+
+    public double magnitude() {
+        return Math.sqrt(this.dot(this));
+    }
+
+    public double distanceTo(Vector that) {
+        if (this.N != that.N) throw new IllegalArgumentException("Dimensions don't agree");
+        return this.minus(that).magnitude();
+    }
+
+    public Vector plus(Vector that) {
+        if (this.N != that.N) throw new IllegalArgumentException("Dimensions don't agree");
+        Vector c = new Vector(N);
         for (int i = 0; i < N; i++)
-            temp[i] = data[i] - that.data[i];
-        return new Vector(temp);
+            c.data[i] = this.data[i] + that.data[i];
+        return c;
     }
-    public Vector abs(Vector that) 
-    {
-        int[] temp = new int[N];
-        for (int i = 0; i < N ; i++)
-            temp[i] = Math.abs(data[i] - that.data[i]);
-        return new Vector(temp);
-    }
-    public Vector mult(int that) 
-    {
-        int[] temp = new int[N];
+
+    public Vector minus(Vector that) {
+        if (this.N != that.N) throw new IllegalArgumentException("Dimensions don't agree");
+        Vector c = new Vector(N);
         for (int i = 0; i < N; i++)
-            temp[i] = data[i] * that;
-        return new Vector(temp);
+            c.data[i] = this.data[i] - that.data[i];
+        return c;
     }
-    public boolean equ(Vector that) 
-    {
-        for (int i=0; i < N; i++)
-            if (data[i] - that.data[i] != 0) return false;
-        return true;
+
+    public Vector times(double factor) {
+        Vector c = new Vector(N);
+        for (int i = 0; i < N; i++)
+            c.data[i] = factor * data[i];
+        return c;
     }
-    public double length()
-    {
-        double temp = 0.0;
-        for (int i=0; i < N; i++)
-            temp += Math.pow(data[i], 2);
-        return Math.sqrt(temp);
+    
+    public Vector div(double factor) {
+        Vector c = new Vector(N);
+        for (int i = 0; i < N; i++)
+            c.data[i] = data[i] / factor;
+        return c;
     }
-    public String toString()
-    {
-        String temp = "( ";
-        for (int i= 0; i < N; i++)
-            temp += new String(data[i] + " ");
-        return temp + ")";
+
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < N; i++)
+            s = s + data[i] + " ";
+        return s;
     }
 }

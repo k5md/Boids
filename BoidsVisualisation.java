@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.util.Date;
+
 
 class BoidsVisualisation extends JPanel implements MouseListener 
 {
@@ -19,7 +21,7 @@ class BoidsVisualisation extends JPanel implements MouseListener
     
     public BoidsVisualisation()
     {
-        boids = new Boids(50, width, height);
+        boids = new Boids(500, width, height);
         myJFrame.setSize(width, height);
         myJFrame.add(button, BorderLayout.SOUTH);
         myJFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,21 +35,26 @@ class BoidsVisualisation extends JPanel implements MouseListener
             }
         });
         this.addMouseListener(this);
-        this.timer = new Timer(30, new ActionListener(){     
+        timer = new Timer(30, new ActionListener(){     
             public void actionPerformed(ActionEvent e) 
             {
-                boids.move();                        
+                boids.move(); 
                 myJFrame.revalidate();  
                 myJFrame.repaint();
             }
         });
     }
+    
+    
     public void paint(Graphics g) 
     {  
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setStroke(new BasicStroke(5));
         g2d.setPaint(Color.black);
+        
+        
+        //for (int i = 0; i < birds.length - 1; i++)   
+            //g.drawLine((int)birds[i].position.data[0],(int)birds[i].position.data[1], (int)birds[i].position.data[0], (int)birds[i].position.data[1]);   
         boids.draw(g2d);
     }     
     public void mouseClicked(MouseEvent me) {
@@ -59,7 +66,13 @@ class BoidsVisualisation extends JPanel implements MouseListener
     public void mousePressed(MouseEvent e) {
     }
     public void mouseExited(MouseEvent e) {
-    }  
+    }
+    
+    private long getTimeMillis() 
+    {
+        Date d = new Date();
+        return d.getTime();
+    }
     public static void main(String args[]) 
     {
         BoidsVisualisation bv = new BoidsVisualisation();
