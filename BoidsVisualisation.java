@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.event.*;
+ import javax.swing.border.EmptyBorder;
 
 class BoidsVisualisation extends JFrame implements MouseListener
 {
@@ -33,9 +34,7 @@ class BoidsVisualisation extends JFrame implements MouseListener
         
         myJFrame.setSize(width, height);
         myJFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        Container content = myJFrame.getContentPane();
-        
+         
         field= new Field();
         field.setPreferredSize(new Dimension(fieldWidth, height));
         field.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -44,6 +43,8 @@ class BoidsVisualisation extends JFrame implements MouseListener
         controlPanel.setPreferredSize(new Dimension(controlWidth, height));
         controlPanel.setBorder(BorderFactory.createLineBorder(Color.black));
         
+        Container content = myJFrame.getContentPane();
+        content.setLayout(new BorderLayout());
         content.add(controlPanel, BorderLayout.EAST);
         content.add(field, BorderLayout.WEST);
         
@@ -68,6 +69,7 @@ class BoidsVisualisation extends JFrame implements MouseListener
     double cohesionCoefficient = 100.0;
     int alignmentCoefficient = 8;
     double separationCoefficient = 10.0;
+    int N = 500;
         
     class Field extends JPanel
     {
@@ -75,8 +77,7 @@ class BoidsVisualisation extends JFrame implements MouseListener
         
         public Field()
         {
-            boids = new Boids(500, fieldWidth, height);
-            
+            init(N, fieldWidth, height);
             
             timer = new Timer(30, new ActionListener(){
                 public void actionPerformed(ActionEvent e)
@@ -85,8 +86,10 @@ class BoidsVisualisation extends JFrame implements MouseListener
                     myJFrame.repaint();
                 }
             });
-            
-            setVisible(true); 
+        }
+        public void init(int N, int fieldWidth, int height)
+        {
+            boids = new Boids(N, fieldWidth, height);
         }
         
         @Override
@@ -95,21 +98,22 @@ class BoidsVisualisation extends JFrame implements MouseListener
             Graphics2D g2d = (Graphics2D) g;
             g2d.setStroke(new BasicStroke(5));
             g2d.setPaint(Color.black);
-            //for (int i = 0; i < boids.birds.length - 1; i++)   
-            //g.drawLine((int)boids.birds[i].position.data[0],(int)boids.birds[i].position.data[1], (int)boids.birds[i].position.data[0], (int)boids.birds[i].position.data[1]); 
             boids.draw(g2d);
         } 
     }
     
-    
     class ControlPanel extends JPanel
     {
+        JTextField numberBoids;
+        
         public ControlPanel()
         { 
             JButton button = new JButton("Run");
             button.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
+                    field.init(Integer.parseInt(numberBoids.getText()), fieldWidth, height);
                     timer.start();
+                    
                 }
             });
             
@@ -138,15 +142,52 @@ class BoidsVisualisation extends JFrame implements MouseListener
             });
             
             
-            add(button, BorderLayout.SOUTH);
-            add(cohesionSlider, BorderLayout.NORTH);
-            add(alignmentSlider, BorderLayout.NORTH);
-            add(separationSlider, BorderLayout.NORTH);
+            
+            cohesionSlider.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+            alignmentSlider.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+            separationSlider.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+            
+            JLabel cohesionLabel = new JLabel("Cohesion");
+            cohesionLabel.setLabelFor(cohesionSlider);
+            JLabel alignmentLabel = new JLabel("Alignment");
+            alignmentLabel.setLabelFor(alignmentSlider);
+            JLabel separationLabel = new JLabel("Separation");
+            separationLabel.setLabelFor(separationSlider);
+            
+            JPanel textControlsPane = new JPanel();
+            textControlsPane.setPreferredSize(new Dimension(controlWidth-10, height/4));
+            textControlsPane.setBorder(BorderFactory.createTitledBorder("Behaviour coefficients"));
+            textControlsPane.setLayout(new BoxLayout(textControlsPane, BoxLayout.Y_AXIS));
+            
+            textControlsPane.add(cohesionLabel);
+            textControlsPane.add(cohesionSlider);
+            textControlsPane.add(alignmentLabel);
+            textControlsPane.add(alignmentSlider);
+            textControlsPane.add(separationLabel);
+            textControlsPane.add(separationSlider);
+                
+            add(textControlsPane);
+ 
+            JPanel textParametersPane = new JPanel();
+            textParametersPane.setPreferredSize(new Dimension(controlWidth-10, height/4));
+            textParametersPane.setBorder(BorderFactory.createTitledBorder("General parameters"));
+   
+            numberBoids = new JTextField("500", 10);
+            numberBoids.setHorizontalAlignment(JTextField.LEFT);
+            
+            JLabel numberBoidsLabel = new JLabel("Number of b-oid objects:");
+            numberBoidsLabel.setLabelFor(numberBoids);
+            
+            textParametersPane.add(numberBoidsLabel);
+            textParametersPane.add(numberBoids);
+            
+            add(textParametersPane);
+                     
+            add(button);
+
+            pack();
             
             setVisible(true); 
-            
-
         }
-
     }
 }
