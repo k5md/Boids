@@ -10,7 +10,7 @@ class Boids
     KDTree kd = new KDTree(2);
     int N;
     Bird[] birds; 
-    
+    int fullness = 0; //determines rate at which KD-tree is rebuild 
     int xRes;
     int yRes;
     public Boids(int N, int xRes, int yRes)
@@ -36,43 +36,41 @@ class Boids
         }
         System.out.println("Done in: " + (getTimeMillis() - temp) +"ms.");
     }    
-    public void move(double cohesionCoefficient, int alignmentCoefficient, double separationCoefficient) 
+    public void move(int distance, double cohesionCoefficient, int alignmentCoefficient, double separationCoefficient) 
     {
-        /*
-        int[] ridx = new int[birds.length];
-        for (int i = 0; i < birds.length - 1; i++)
-            ridx[i] = i;
-        shuffle(ridx);
-        */
+        //long temp = getTimeMillis();
+        
         for (int i = 0; i < birds.length - 1; i++)  
         {
             try
             {
-                //double[] coords = new double[]{birds[i].position.cartesian(0), birds[i].position.cartesian(1)};
                 double[] coords = birds[i].position.data;
-                List<Bird> nbrs = kd.nearest(coords, 50);
+                List<Bird> nbrs = kd.nearest(coords, distance);
                 kd.delete(coords);
                 birds[i].velocity(nbrs, xRes, yRes, cohesionCoefficient, alignmentCoefficient, separationCoefficient);
                 birds[i].position();
                 kd.insert(birds[i].position.data, birds[i]);
+                fullness++;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 System.out.println("Exception caught: " + e);   
             }         
         }
-        kd = new KDTree(2);
-        for (int i = 0; i < birds.length - 1; i++)  
+        if (fullness > 3)
         {
-            try
+            kd = new KDTree(2);
+            for (int i = 0; i < birds.length - 1; i++)  
             {
-                kd.insert(birds[i].position.data, birds[i]);
-            }
-            catch (Exception e)
-            {
-                System.out.println("Exception caught: " + e);   
-            }  
-        }  
+                try{
+                    kd.insert(birds[i].position.data, birds[i]);
+                } catch (Exception e) {
+                    System.out.println("Exception caught: " + e);   
+                }  
+            } 
+            fullness = 0;
+        }
+        
+        //System.out.println(" Move in: " + (getTimeMillis() - temp) +"ms.");
     }
     public void draw(Graphics g)
     {

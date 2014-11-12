@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Iterator;
 
 class Bird 
 {
@@ -48,14 +47,10 @@ class Bird
     {
         int x = 0;
         int y = 0;
-        if (this.position.data[0] < 0)
-            x = 10;
-        else if (this.position.data[0]  > xMax) 
-            x = -10;
-        if (this.position.data[1]  < 0) 
-            y = 10;
-        else if (this.position.data[1]  > yMax) 
-            y = -10;
+        if (this.position.data[0] < 0)                x = 10;
+        else if (this.position.data[0]  > xMax)       x = -10;
+        if (this.position.data[1]  < 0)               y = 10;
+        else if (this.position.data[1]  > yMax)       y = -10;
         return new Vector(x,y);
     }
     public void limit_velocity()
