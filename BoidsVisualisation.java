@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -213,10 +212,10 @@ class BoidsVisualisation extends JFrame implements MouseListener
             JLabel numberBoidsLabel = new JLabel("Number of boid objects:");
             numberBoidsLabel.setLabelFor(numberBoids);
             
-            //Text field for distance to search neighbours (FOV) with label
+            //Text field for distance of search for neighbours (FOV) with label
             fov = new JTextField("50", 10);
             fov.setHorizontalAlignment(JTextField.LEFT);
-            JLabel fovLabel = new JLabel("Distance to search neighbours:");
+            JLabel fovLabel = new JLabel("Distance to search for neighbours:");
             fovLabel.setLabelFor(fov);
             
             //Add components to general parameters' panel

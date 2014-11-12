@@ -1,10 +1,8 @@
-import java.util.Random;
-import java.awt.Graphics;
-import java.util.List;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Date;
-import java.util.concurrent.atomic.*;
+import java.awt.Graphics;
 import edu.wlu.cs.levy.CG.KDTree;
+
 class Boids 
 {
     KDTree kd = new KDTree(2);
@@ -47,8 +45,8 @@ class Boids
                 double[] coords = birds[i].position.data;
                 List<Bird> nbrs = kd.nearest(coords, distance);
                 kd.delete(coords);
-                birds[i].velocity(nbrs, xRes, yRes, cohesionCoefficient, alignmentCoefficient, separationCoefficient);
-                birds[i].position();
+                birds[i].updateVelocity(nbrs, xRes, yRes, cohesionCoefficient, alignmentCoefficient, separationCoefficient);
+                birds[i].updatePosition();
                 kd.insert(birds[i].position.data, birds[i]);
                 fullness++;
             }
@@ -69,8 +67,6 @@ class Boids
             } 
             fullness = 0;
         }
-        
-        //System.out.println(" Move in: " + (getTimeMillis() - temp) +"ms.");
     }
     public void draw(Graphics g)
     {
