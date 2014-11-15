@@ -11,6 +11,7 @@ This is an implementation of boids algorithm, used to simulate the flocking beha
 >   - separation: steer to avoid crowding local flockmates
 >   - alignment: steer towards the average heading of local flockmates
 >   - cohesion: steer to move toward the average position (center of mass) of local flockmates
+
 You can find more  information on Wikipedia: http://en.wikipedia.org/wiki/Boids
 
 This implementation almost directly follows on www.kfish.org/boids/pseudocode.html , but provides neat GUI to increase 
