@@ -14,9 +14,9 @@ This is an implementation of boids algorithm, used to simulate the flocking beha
 
 You can find more  information on Wikipedia: http://en.wikipedia.org/wiki/Boids
 
-This implementation almost directly follows on www.kfish.org/boids/pseudocode.html , but provides neat GUI to increase 
-flexibility - in real-time one can change coefficients, affecting boids behaviour. The use of Kd-tree structure 
-made it possible to support real-time simulation of numerous boids.
+This implementation almost directly follows pseudocode on www.kfish.org/boids/pseudocode.html , but provides neat GUI 
+to increase flexibility - in real-time one can change coefficients, affecting boids behaviour. The use of Kd-tree 
+structure made it possible to support real-time simulation of numerous boids.
 
 Contents
 ---------------------
