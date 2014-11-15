@@ -1,4 +1,4 @@
-Boids Classics
+Boids Classic
 ====================
 
 What is it?
