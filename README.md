@@ -37,4 +37,4 @@ Simply compile project files with java compiler (with kd.jar included), then run
 
 Authors
 ---------------------
-fr05td3su
+fr05td3su <serg.dfc@yandex.ru>
