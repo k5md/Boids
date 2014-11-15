@@ -3,8 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-class BoidsVisualisation extends JFrame implements MouseListener
-{
+class BoidsVisualisation extends JFrame implements MouseListener {
     JFrame myJFrame;
     Field field;
     ControlPanel controlPanel;
@@ -12,12 +11,11 @@ class BoidsVisualisation extends JFrame implements MouseListener
     
     int controlWidth, fieldWidth, height;
     
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         BoidsVisualisation bv = new BoidsVisualisation();
     }
-    public BoidsVisualisation()
-    { 
+    
+    public BoidsVisualisation() { 
         //Determine width and height of frame, field and control panel
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
@@ -52,32 +50,26 @@ class BoidsVisualisation extends JFrame implements MouseListener
         
         addMouseListener(this);
     }
-    public void mouseClicked(MouseEvent me) {
-    }
-    public void mouseEntered(MouseEvent e) {
-    }
-    public void mouseReleased(MouseEvent e) {
-    }
-    public void mousePressed(MouseEvent e) {
-    }
-    public void mouseExited(MouseEvent e) {
-    }
+    
+    public void mouseClicked(MouseEvent me) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
     
     double cohesionCoefficient = 100.0;
     int alignmentCoefficient = 8;
     double separationCoefficient = 10.0;
     int N = 500;                                 //number of boids to simulate
-    int distance = 50;                           //distance for boid to search neighbours in kd-tree
+    int distance = 50;                           //amount of neighbours to search for in kd-tree
     
     /**
      * Field --- implements visualisation of Boids.
      */
-    class Field extends JPanel
-    {
+    class Field extends JPanel {
         Boids boids;
         
-        public Field()
-        {
+        public Field() {
             init(N, fieldWidth, height);
             timer = new Timer(30, new ActionListener(){
                 public void actionPerformed(ActionEvent e)
@@ -88,14 +80,12 @@ class BoidsVisualisation extends JFrame implements MouseListener
             });
         }
         
-        public void init(int N, int fieldWidth, int height)
-        {
+        public void init(int N, int fieldWidth, int height) {
             boids = new Boids(N, fieldWidth, height);
         }
         
         @Override
-        public void paintComponent(Graphics g)
-        {
+        public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setStroke(new BasicStroke(5));
             g2d.setPaint(Color.black);
@@ -106,19 +96,16 @@ class BoidsVisualisation extends JFrame implements MouseListener
     /**
      * ControlPanel --- creates and registers GUI-control components.
      */
-    class ControlPanel extends JPanel
-    {
+    class ControlPanel extends JPanel {
         JTextField numberBoids;
         JTextField fov;
         
-        public ControlPanel()
-        { 
+        public ControlPanel() { 
             // Buttons  
             JButton startButton = new JButton("Start");
             startButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e) {
-                    if (field.boids == null)
-                    {
+                    if (field.boids == null) {
                         N = Integer.parseInt(numberBoids.getText());
                         distance = Integer.parseInt(fov.getText());
                         if (N > 0 && distance - N <= 0)
@@ -201,7 +188,7 @@ class BoidsVisualisation extends JFrame implements MouseListener
                 
             add(textControlsPane);
  
-            //General parameters(e.g. number of boids, range of FOV) panel
+            //General parameters(e.g. number of boids, of neighbours to search) panel
             JPanel textParametersPane = new JPanel();
             textParametersPane.setPreferredSize(new Dimension(controlWidth-10, height/4));
             textParametersPane.setBorder(BorderFactory.createTitledBorder("General parameters"));
@@ -212,10 +199,10 @@ class BoidsVisualisation extends JFrame implements MouseListener
             JLabel numberBoidsLabel = new JLabel("Number of boid objects:");
             numberBoidsLabel.setLabelFor(numberBoids);
             
-            //Text field for distance of search for neighbours (FOV) with label
+            //Text field for amount of neighbours to search for (FOV) with label
             fov = new JTextField("50", 10);
             fov.setHorizontalAlignment(JTextField.LEFT);
-            JLabel fovLabel = new JLabel("Distance to search for neighbours:");
+            JLabel fovLabel = new JLabel("Number of neighbours to search for:");
             fovLabel.setLabelFor(fov);
             
             //Add components to general parameters' panel
