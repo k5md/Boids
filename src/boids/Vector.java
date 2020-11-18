@@ -1,3 +1,4 @@
+package boids;
 /**
  * Vector --- class to represent an N-dimentional vector.
  */
