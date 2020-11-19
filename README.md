@@ -26,15 +26,6 @@ The project includes following files:
 - BoidsVisualisation.java - provides basic but flexible GUI.
 - Vector.java - class to represent an N-dimentional vector.
 
-Required libraries
----------------------
-edu.wlu.cs.levy.CG.KDTree - used to make fast nearest neighbour search possible. One can find this library on
-http://home.wlu.edu/~levys/software/kd/ .
-
 How to run
 ---------------------
 Simply compile project files with java compiler (with kd.jar included), then run BoidsVisualisation.
-
-Authors
----------------------
-fr05td3su <serg.dfc@yandex.ru>
