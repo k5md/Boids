@@ -1,3 +1,4 @@
+package boids;
 import java.util.List;
 
 /**

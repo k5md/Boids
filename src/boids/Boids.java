@@ -1,3 +1,4 @@
+package boids;
 import java.util.Random;
 import java.awt.Graphics;
 import edu.wlu.cs.levy.CG.KDTree;
@@ -38,7 +39,8 @@ class Boids
             try{
             kd.insert(birds[i].position.data, birds[i]);
             } catch (Exception e) {
-                System.out.println("Exception caught: " + e);   
+                System.out.println("Init Exception caught: " + e);   
+                e.printStackTrace();
             }
         }
     }  
@@ -63,7 +65,12 @@ class Boids
                 double[] coords = birds[i].position.data;
                 Bird[] nbrs = new Bird[distance];
                 kd.nearest(coords, distance).toArray(nbrs); 
-                kd.delete(coords);
+                try {
+                    kd.delete(coords);
+                } catch (Exception e) {
+                    // we ignore this exception on purpose
+                    System.out.println("KeyMissingException deleting caught: " + e + e.getMessage());
+                }
                 birds[i].updateVelocity(nbrs, xRes, yRes, cohesionCoefficient, alignmentCoefficient, separationCoefficient);
                 birds[i].updatePosition();
                 kd.insert(birds[i].position.data, birds[i]);
@@ -75,8 +82,12 @@ class Boids
             kd = new KDTree(2);
             for (int i = 0; i < N - 1; i++)  
                 kd.insert(birds[i].position.data, birds[i]);
+        } catch (KeySizeException | KeyDuplicateException e) {
+            System.out.println("KeySizeException/KeyDuplicateException caught: " + e + e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("Exception caught: " + e);   
+            System.out.println("Unknown exception caught: ");   
+            e.printStackTrace();
         } 
     }
     
